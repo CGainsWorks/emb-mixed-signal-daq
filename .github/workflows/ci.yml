@@ -1,0 +1,121 @@
+name: ci
+
+# Budget note. The repository is public, so standard runners cost nothing,
+# but the workflow is built lean anyway because a wasteful job wastes on every
+# push for ever:
+#
+#   one job            one checkout and one dependency install, shared by the
+#                      regeneration, the firmware tests, the firmware in the
+#                      loop run, the ngspice cross-check and the Python tests
+#   concurrency        pushing twice cancels the first run
+#   pip cache          the dependency install is the largest fixed cost
+#   timeout-minutes    a hung job cannot run for six hours
+#   manual extras      the Cortex-M cross compile installs a toolchain of a few
+#                      hundred megabytes, so it runs on demand, not per push
+#
+# No path filter: every committed file is checked by something, the prose
+# included (tests/test_style.py), so there is no push that needs no check.
+# `make ci` runs the same steps locally.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      cross_compile:
+        description: 'Also compile the firmware for Cortex-M4F'
+        type: boolean
+        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Regenerate, test and cross-check
+    # ubuntu-latest rather than a pinned image: a retired label fails before
+    # any step runs, which is a worse failure than an image upgrade; the
+    # outputs check tolerates platform differences by design.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      # No editable install: the scripts and tests put model/ and host-tools/
+      # on the path themselves.
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+
+      # About fifteen seconds. The update only runs if the direct install
+      # misses because the runner's package index is stale.
+      - name: Install ngspice
+        run: |
+          sudo apt-get install -y -qq ngspice || (sudo apt-get update -qq && sudo apt-get install -y -qq ngspice)
+          ngspice -v | head -2
+
+      - name: Regenerate every result
+        run: python scripts/run_all.py
+
+      - name: Firmware unit tests (address and undefined behaviour sanitisers)
+        run: make -C firmware test sim
+
+      - name: Firmware in the loop against the behavioural converter
+        run: python scripts/run_fil.py
+
+      - name: ngspice agrees with the noise budget
+        run: python scripts/run_ngspice.py
+
+      - name: Python tests
+        run: python -m pytest tests -q
+
+      # The numbers in this repository have to be the ones the code produces
+      # today. Compared as numbers to a tolerance, not as bytes; see the
+      # script's docstring for why.
+      - name: Committed outputs match a fresh run
+        run: python scripts/check_outputs_current.py
+
+      - name: Every plot was produced
+        run: |
+          for f in test-results/noise-floor/budget_psd.png test-results/noise-floor/budget_shares.png \
+                   test-results/noise-floor/histograms.png test-results/enob-snr/spectra.png \
+                   test-results/linearity/inl.png test-results/calibration/errors.png; do
+            [ -s "$f" ] || { echo "::error::missing or empty: $f"; exit 1; }
+          done
+
+      # Artifacts count against the storage quota, so only on a manual run.
+      - name: Upload results
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v5
+        with:
+          name: results
+          retention-days: 7
+          path: |
+            test-results/
+            build/fil/*.bin
+            docs/
+
+  cross-compile:
+    name: Firmware for Cortex-M4F (compile only)
+    if: github.event_name == 'workflow_dispatch' && inputs.cross_compile
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Install the Arm toolchain
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends gcc-arm-none-eabi libnewlib-arm-none-eabi
+      - name: Compile
+        run: make -C firmware arm

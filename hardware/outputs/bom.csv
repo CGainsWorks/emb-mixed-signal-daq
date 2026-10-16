@@ -1,0 +1,27 @@
+reference,value,footprint,description
+J1,Signal in,Connector:Conn_01x02,Sensor input
+J3,Cal ref in,Connector:Conn_01x02,Calibration reference input
+U5,Input selector,to be selected,"Signal, shorted pair or calibration reference"
+R3,499,Resistor_SMD:R_0603_1608Metric,"Input protection, 0.1 %"
+R4,499,Resistor_SMD:R_0603_1608Metric,"Input protection, 0.1 %"
+C1,1n,Capacitor_SMD:C_0603_1608Metric,"EMI filter, C0G"
+C2,1n,Capacitor_SMD:C_0603_1608Metric,"EMI filter, C0G"
+C3,10n,Capacitor_SMD:C_0603_1608Metric,"EMI filter, differential, C0G"
+U1A,Zero drift,to be selected,Gain stage
+U1B,Zero drift,to be selected,Gain stage
+R5,2.49k,Resistor_SMD:R_0603_1608Metric,"Feedback, 0.1 %"
+R6,2.49k,Resistor_SMD:R_0603_1608Metric,"Feedback, 0.1 %"
+R7A,715,Resistor_SMD:R_0603_1608Metric,"Gain set, G=8, 0.1 %"
+R7B,162,Resistor_SMD:R_0603_1608Metric,"Gain set, G=32, 0.1 %"
+R7C,39.2,Resistor_SMD:R_0603_1608Metric,"Gain set, G=128, 0.1 %"
+U4,Gain mux,to be selected,"R_G select; EN low opens every switch, which is gain 1"
+R8,499,Resistor_SMD:R_0603_1608Metric,"Anti-alias, 0.1 %"
+R9,499,Resistor_SMD:R_0603_1608Metric,"Anti-alias, 0.1 %"
+C4,1n,Capacitor_SMD:C_0603_1608Metric,"Anti-alias, C0G"
+C5,1n,Capacitor_SMD:C_0603_1608Metric,"Anti-alias, C0G"
+C6,10n,Capacitor_SMD:C_0603_1608Metric,"Anti-alias, differential, C0G"
+U2,AD7124-8,Package_CSP:LFCSP-32-1EP_5x5mm_P0.5mm,"24-bit sigma-delta ADC, register map the firmware targets"
+U3,2.5 V,to be selected,"Precision reference, part to be selected"
+R10,100,Resistor_SMD:R_0603_1608Metric,Reference noise filter
+C7,47u,Capacitor_SMD:C_1210_3225Metric,"Reference noise filter, 34 Hz"
+J2,To MCU,Connector:Conn_01x12,SPI and control to the STM32 board

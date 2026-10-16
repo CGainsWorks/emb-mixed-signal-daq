@@ -1,0 +1,40 @@
+gain,contributor,block,in_spice_deck,density_nV_rtHz_at_10Hz,rms_nV,share_percent
+1,"Sensor resistance, 2 x 175 ohm",source,yes,2.4087,56.749,0.776
+1,"Protection resistors, 2 x 499 ohm",input filter,yes,4.0673,95.827,2.214
+1,"Amplifier voltage noise, 2 x 6 nV/rtHz",gain stage,yes,8.4853,200.256,9.668
+1,"Amplifier current noise, 2 x 0.3 pA/rtHz in R_leg",gain stage,yes,0.2860,6.737,0.011
+1,"Feedback resistors R_f, 2 x 2490 ohm",gain stage,yes,9.0856,214.425,11.084
+1,"Anti-alias resistors, 2 x 499 ohm",anti-alias filter,yes,4.0673,95.990,2.221
+1,"Converter input noise, 20 nV/rtHz",converter,no,20.0000,471.808,53.665
+1,Modulator quantisation (linear model),converter,no,,290.617,20.361
+1,TOTAL,,,,644.053,100.000
+8,"Sensor resistance, 2 x 175 ohm",source,yes,2.4087,56.749,5.087
+8,"Protection resistors, 2 x 499 ohm",input filter,yes,4.0673,95.827,14.505
+8,"Amplifier voltage noise, 2 x 6 nV/rtHz",gain stage,yes,8.4853,200.256,63.344
+8,"Amplifier current noise, 2 x 0.3 pA/rtHz in R_leg",gain stage,yes,0.2860,6.737,0.072
+8,"Feedback resistors R_f, 2 x 2490 ohm",gain stage,yes,1.1407,26.921,1.145
+8,"Gain resistor R_G, 715 ohm",gain stage,yes,3.0104,71.048,7.973
+8,"Anti-alias resistors, 2 x 499 ohm",anti-alias filter,yes,0.5106,12.051,0.229
+8,"Converter input noise, 20 nV/rtHz",converter,no,2.5110,59.235,5.542
+8,Modulator quantisation (linear model),converter,no,,36.487,2.103
+8,TOTAL,,,,251.613,100.000
+32,"Sensor resistance, 2 x 175 ohm",source,yes,2.4087,56.749,5.929
+32,"Protection resistors, 2 x 499 ohm",input filter,yes,4.0673,95.827,16.907
+32,"Amplifier voltage noise, 2 x 6 nV/rtHz",gain stage,yes,8.4853,200.256,73.835
+32,"Amplifier current noise, 2 x 0.3 pA/rtHz in R_leg",gain stage,yes,0.2860,6.737,0.084
+32,"Feedback resistors R_f, 2 x 2490 ohm",gain stage,yes,0.2862,6.756,0.084
+32,"Gain resistor R_G, 162 ohm",gain stage,yes,1.5871,37.455,2.583
+32,"Anti-alias resistors, 2 x 499 ohm",anti-alias filter,yes,0.1281,3.024,0.017
+32,"Converter input noise, 20 nV/rtHz",converter,no,0.6301,14.864,0.407
+32,Modulator quantisation (linear model),converter,no,,9.156,0.154
+32,TOTAL,,,,233.053,100.000
+128,"Sensor resistance, 2 x 175 ohm",source,yes,2.4087,56.749,6.084
+128,"Protection resistors, 2 x 499 ohm",input filter,yes,4.0673,95.827,17.349
+128,"Amplifier voltage noise, 2 x 6 nV/rtHz",gain stage,yes,8.4853,200.256,75.766
+128,"Amplifier current noise, 2 x 0.3 pA/rtHz in R_leg",gain stage,yes,0.2860,6.737,0.086
+128,"Feedback resistors R_f, 2 x 2490 ohm",gain stage,yes,0.0710,1.675,0.005
+128,"Gain resistor R_G, 39.2 ohm",gain stage,yes,0.7998,18.876,0.673
+128,"Anti-alias resistors, 2 x 499 ohm",anti-alias filter,yes,0.0318,0.750,0.001
+128,"Converter input noise, 20 nV/rtHz",converter,no,0.1562,3.685,0.026
+128,Modulator quantisation (linear model),converter,no,,2.270,0.010
+128,TOTAL,,,,230.064,100.000

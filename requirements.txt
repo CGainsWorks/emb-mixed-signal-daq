@@ -1,0 +1,7 @@
+# Versions the committed results were generated and checked with. numpy 1.26
+# and 2.5 give byte identical outputs; the lower bounds are what the code
+# needs, not what it was tried on.
+numpy>=1.24
+scipy>=1.10
+matplotlib>=3.7
+pytest>=7.4
